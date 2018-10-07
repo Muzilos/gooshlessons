@@ -23,6 +23,10 @@ optional arguments:
                         math/verbal/writing/all
 
 ```
+For Example, if you want to verbal videos, run the following command
+```
+python gooshlesson.py -s verbal
+```
 Enjoy the video lessons!
 Good Luck for GRE!
 
