@@ -2,7 +2,7 @@
 from bs4 import BeautifulSoup as bsoup
 
 import os
-import urllib2
+import urllib.request
 import requests
 import time
 import argparse
@@ -38,11 +38,12 @@ FINAL_LIST = [MATH_LINK_LIST, VERBAL_LINK_LIST, WRITING_LINK_LIST]
 
 def download(url, file_name):
     file_name = file_name.encode('utf-8')
-    u = urllib2.urlopen(url)
+    u = urllib.request.urlopen(url)
     f = open(file_name, 'wb')
     meta = u.info()
-    file_size = int(meta.getheaders("Content-Length")[0])
-    print "Downloading: %s Bytes: %s" % (file_name, file_size)
+    file_size = int(meta.get("Content-Length"))#[0])
+    print("FILE SIZE %s" % file_size)
+    print("Downloading: %s Bytes: %s" % (file_name, file_size))
 
     file_size_dl = 0
     block_sz = 8192
@@ -55,13 +56,13 @@ def download(url, file_name):
         f.write(buffer)
         status = r"%10d  [%3.2f%%]" % (file_size_dl, file_size_dl * 100. / file_size)
         status = status + chr(8)*(len(status)+1)
-        print status,
+        print(status,)
 
     f.close()
 
 
 def go_to_path_and_work(argument):
-    print argument
+    print(argument)
     if argument == 'verbal':
         os.chdir(VERBAL_DIR)
         parse_and_download(VERBAL_LINK_LIST, VERBAL_DIR)
@@ -96,9 +97,9 @@ def parse_and_download(url_list, dir):
 
         lesson_list_to_proc = lesson_list.find_all('div', attrs={'class': 'lesson-item'})
         # enabled_lesson_list = lesson_list.find_all('div', attrs={'class': 'lesson-item'})
-        # print len(set(enabled_lesson_list))
-        # print len(set(disabled_lesson_list))
-        # print len(set(disabled_lesson_list).intersection(set(enabled_lesson_list)))
+        # print(len(set(enabled_lesson_list))
+        # print(len(set(disabled_lesson_list))
+        # print(len(set(disabled_lesson_list).intersection(set(enabled_lesson_list)))
 
         process_list(lesson_list_to_proc, dir)
         # process_list(enabled_lesson_list)
